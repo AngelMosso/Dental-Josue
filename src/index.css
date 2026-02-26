@@ -1,0 +1,181 @@
+@import "tailwindcss";
+
+@theme {
+  --color-medical-blue: #0077b6;
+  --color-medical-light: #e0f2fe;
+  --color-medical-gray: #f8fafc;
+  --color-border: #e2e8f0;
+  --color-foreground: #020617;
+  --color-background: #ffffff;
+
+  --grid-template-columns-16: repeat(16, minmax(0, 1fr));
+}
+
+body {
+  @apply bg-medical-gray text-foreground;
+}
+
+/* ═══════════════════════════════════════════════════
+   GLOBAL SMOOTH TRANSITIONS
+   ═══════════════════════════════════════════════════ */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth scrolling everywhere */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Premium scrollbar (Webkit) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 100px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.18);
+}
+
+/* ═══════════════════════════════════════════════════
+   KEYFRAME ANIMATIONS
+   ═══════════════════════════════════════════════════ */
+
+/* Elegant shimmer for loading states */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Subtle float for decorative elements */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* Smooth pulse for notifications */
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(0.97); }
+}
+
+/* Counting number reveal */
+@keyframes count-reveal {
+  from { opacity: 0; transform: translateY(8px); filter: blur(4px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+/* Progress bar fill */
+@keyframes progress-fill {
+  from { width: 0%; }
+}
+
+/* Fade in up — CSS fallback */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scale in — for modals */
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Slide in from right — for panels */
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   UTILITY CLASSES
+   ═══════════════════════════════════════════════════ */
+
+/* Skeleton loader */
+.skeleton {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease infinite;
+  border-radius: 12px;
+}
+
+/* Glass effect */
+.glass {
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+/* Staggered children animation — pure CSS */
+.stagger-children > * {
+  animation: fade-in-up 0.4s cubic-bezier(0, 0, 0.2, 1) both;
+}
+.stagger-children > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.10s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.20s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.30s; }
+.stagger-children > *:nth-child(7) { animation-delay: 0.35s; }
+.stagger-children > *:nth-child(8) { animation-delay: 0.40s; }
+
+/* Hover lift with shadow */
+.hover-lift {
+  transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1),
+              box-shadow 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+}
+.hover-lift:active {
+  transform: translateY(0) scale(0.99);
+}
+
+/* Number counting animation */
+.count-up {
+  animation: count-reveal 0.6s cubic-bezier(0, 0, 0.2, 1) both;
+  animation-delay: 0.2s;
+}
+
+/* Progress bar animated */
+.progress-animated {
+  animation: progress-fill 1s cubic-bezier(0, 0, 0.2, 1) both;
+  animation-delay: 0.4s;
+}
+
+/* Scale in modal */
+.modal-enter {
+  animation: scale-in 0.25s cubic-bezier(0, 0, 0.2, 1) both;
+}
+
+/* Slide in panel */
+.slide-in {
+  animation: slide-in-right 0.35s cubic-bezier(0, 0, 0.2, 1) both;
+}
