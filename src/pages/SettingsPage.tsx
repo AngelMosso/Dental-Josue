@@ -3,18 +3,17 @@ import {
     Settings as SettingsIcon,
     RefreshCcw,
     ShieldAlert,
-    ChevronRight,
     Trash2,
     Database,
     HardDrive,
-    LogOut
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { patientService } from '../services/patientService';
 import { useAuth } from '../context/AuthContext';
+import { supabase } from '../lib/supabase';
 
 const SettingsPage = () => {
-    const { signOut } = useAuth();
+    const { signOut, isMasterUser } = useAuth();
     const [isResetModalOpen, setIsResetModalOpen] = useState(false);
     const [resetConfirm, setResetConfirm] = useState('');
     const [isResetting, setIsResetting] = useState(false);
@@ -49,7 +48,107 @@ const SettingsPage = () => {
             </header>
 
             <div className="grid grid-cols-1 gap-6">
-                {/* Sección de Seguridad y Datos */}
+                {/* Sección de Seguridad y Acceso */}
+                <section className="bg-white/70 backdrop-blur-xl border border-white/40 rounded-[3rem] p-10 shadow-xl space-y-8">
+                    <div className="flex items-center gap-4">
+                        <div className="p-2 bg-indigo-50 rounded-xl">
+                            <ShieldAlert className="text-indigo-600" size={20} />
+                        </div>
+                        <h3 className="text-lg font-black text-slate-800">Seguridad y Acceso</h3>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="space-y-4 p-8 bg-slate-50/50 rounded-[2.5rem] border border-transparent hover:border-indigo-100 transition-all">
+                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Nombre Completo (Display)</p>
+                            <input
+                                type="text"
+                                placeholder="Ej. Josué Martínez"
+                                defaultValue={localStorage.getItem('dc_user_name') || 'Admin'}
+                                onBlur={(e) => {
+                                    localStorage.setItem('dc_user_name', e.target.value);
+                                }}
+                                className="w-full bg-white border border-slate-100 rounded-xl py-3 px-4 text-sm font-bold text-slate-700 focus:ring-2 focus:ring-indigo-500/20 outline-none"
+                            />
+                        </div>
+
+                        <div className="space-y-4 p-8 bg-slate-50/50 rounded-[2.5rem] border border-transparent hover:border-indigo-100 transition-all">
+                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Especialidad / Cargo</p>
+                            <input
+                                type="text"
+                                placeholder="Ej. Odontólogo Pro"
+                                defaultValue={localStorage.getItem('dc_user_role') || 'Odontólogo Pro'}
+                                onBlur={(e) => {
+                                    localStorage.setItem('dc_user_role', e.target.value);
+                                }}
+                                className="w-full bg-white border border-slate-100 rounded-xl py-3 px-4 text-sm font-bold text-slate-700 focus:ring-2 focus:ring-indigo-500/20 outline-none"
+                            />
+                        </div>
+
+                        <div className="space-y-4 p-8 bg-slate-50/50 rounded-[2.5rem] border border-transparent hover:border-indigo-100 transition-all">
+                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Email del Consultorio</p>
+                            <input
+                                type="email"
+                                defaultValue={localStorage.getItem('dc_master_email') || 'JosueConsultorioR1@gmail.com'}
+                                onBlur={(e) => {
+                                    localStorage.setItem('dc_master_email', e.target.value.toLowerCase());
+                                }}
+                                className="w-full bg-white border border-slate-100 rounded-xl py-3 px-4 text-sm font-bold text-slate-700 focus:ring-2 focus:ring-indigo-500/20 outline-none"
+                            />
+                            <p className="text-[9px] font-bold text-slate-400 italic">* Este es el correo que el sistema reconocerá para el blindaje.</p>
+                        </div>
+
+                        <div className="space-y-4 p-8 bg-slate-50/50 rounded-[2.5rem] border border-transparent hover:border-indigo-100 transition-all">
+                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Nueva Contraseña</p>
+                            <input
+                                type="password"
+                                placeholder="••••••••"
+                                id="new-password"
+                                className="w-full bg-white border border-slate-100 rounded-xl py-3 px-4 text-sm font-bold text-slate-700 focus:ring-2 focus:ring-indigo-500/20 outline-none"
+                            />
+                            <p className="text-[9px] font-bold text-slate-400 italic">* Se actualizará en la base de datos de seguridad.</p>
+                        </div>
+                    </div>
+
+                    <div className="pt-4 flex justify-between items-center">
+                        <div className="flex items-center gap-2">
+                            {isMasterUser ? (
+                                <span className="bg-amber-100 text-amber-700 text-[8px] font-black px-3 py-1 rounded-full uppercase tracking-tighter shadow-sm border border-amber-200 animate-pulse">
+                                    ⚠️ Modo Blindaje Activo (Bypass)
+                                </span>
+                            ) : (
+                                <span className="bg-emerald-100 text-emerald-700 text-[8px] font-black px-3 py-1 rounded-full uppercase tracking-tighter shadow-sm border border-emerald-200">
+                                    🛡️ Conexión Segura Supabase
+                                </span>
+                            )}
+                        </div>
+                        <button
+                            onClick={async () => {
+                                const newPassword = (document.getElementById('new-password') as HTMLInputElement).value;
+                                if (!newPassword || newPassword.length < 6) {
+                                    alert('La contraseña debe tener al menos 6 caracteres.');
+                                    return;
+                                }
+
+                                try {
+                                    if (!isMasterUser) {
+                                        const { error } = await supabase.auth.updateUser({ password: newPassword });
+                                        if (error) throw error;
+                                        alert('Contraseña actualizada en la nube de Supabase.');
+                                    } else {
+                                        alert('Nota: Has cambiado la clave en "Modo Blindaje". Por seguridad, esta clave maestro temporal es estática (Dante45). Para cambiar la clave permanentemente en la nube, crea el usuario en Supabase.');
+                                    }
+                                    window.location.reload();
+                                } catch (err: any) {
+                                    alert('Error al actualizar: ' + err.message);
+                                }
+                            }}
+                            className="px-8 py-4 bg-indigo-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-100 active:scale-95"
+                        >
+                            Aplicar Actualización de Seguridad
+                        </button>
+                    </div>
+                </section>
+
                 <section className="bg-white/70 backdrop-blur-xl border border-white/40 rounded-[3rem] p-10 shadow-xl space-y-8">
                     <div className="flex items-center gap-4">
                         <div className="p-2 bg-rose-50 rounded-xl">

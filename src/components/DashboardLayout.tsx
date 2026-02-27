@@ -111,6 +111,7 @@ export const DashboardLayout = () => {
         if (cmd.toLowerCase().includes('cita') || cmd.toLowerCase().includes('agenda')) navigate('/citas');
         if (cmd.toLowerCase().includes('stock') || cmd.toLowerCase().includes('inventario')) navigate('/inventario');
         if (cmd.toLowerCase().includes('finanzas') || cmd.toLowerCase().includes('factura')) navigate('/finanzas');
+        if (cmd.toLowerCase().includes('ajustes') || cmd.toLowerCase().includes('configuracion')) navigate('/configuracion');
         setSearchValue('');
     }, [navigate]);
 
@@ -120,7 +121,7 @@ export const DashboardLayout = () => {
             <aside className={`
                 fixed md:static inset-y-0 left-0 z-50
                 flex flex-col w-72 bg-white/40 backdrop-blur-3xl border-r border-white/40 p-8 h-full
-                transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]
+                transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] overflow-y-auto custom-scrollbar
                 ${isMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
             `}>
                 <div className="flex items-center justify-between mb-12">
@@ -167,11 +168,11 @@ export const DashboardLayout = () => {
                         </div>
                     </div>
 
-                    <div className="pt-6 border-t border-slate-200/50 space-y-2">
+                    <div className="pt-6 border-t border-slate-200/50 space-y-2 relative z-10">
                         <SidebarItem to="/configuracion" icon={Settings} label="Ajustes" />
                         <button
-                            onClick={signOut}
-                            className="flex w-full items-center gap-3 px-6 py-4 text-rose-500 hover:bg-rose-50 rounded-2xl transition-all font-black uppercase text-[10px] tracking-widest"
+                            onClick={() => signOut()}
+                            className="flex w-full items-center gap-3 px-6 py-4 text-rose-500 hover:bg-rose-50 rounded-2xl transition-all font-black uppercase text-[10px] tracking-widest cursor-pointer relative z-20"
                         >
                             <LogOut size={18} />
                             <span>Salir del Sistema</span>
@@ -210,14 +211,16 @@ export const DashboardLayout = () => {
                             <div className="absolute top-3 right-3 w-2.5 h-2.5 bg-rose-500 border-2 border-white rounded-full" />
                         </button>
                         <div className="h-10 w-[1px] bg-slate-200 mx-2" />
-                        <div className="flex items-center gap-4">
-                            <div className="text-right hidden sm:block">
-                                <p className="text-[11px] font-black text-slate-800 uppercase tracking-tight leading-none">Admin</p>
-                                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1 italic">Odontólogo Pro</p>
-                            </div>
-                            <div className="w-12 h-12 rounded-[1.2rem] bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-black shadow-lg shadow-blue-100">
-                                AD
-                            </div>
+                        <div className="text-right hidden sm:block">
+                            <p className="text-[11px] font-black text-slate-800 uppercase tracking-tight leading-none">
+                                {localStorage.getItem('dc_user_name') || 'Admin'}
+                            </p>
+                            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1 italic">
+                                {localStorage.getItem('dc_user_role') || 'Odontólogo Pro'}
+                            </p>
+                        </div>
+                        <div className="w-12 h-12 rounded-[1.2rem] bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-black shadow-lg shadow-blue-100">
+                            {(localStorage.getItem('dc_user_name') || 'Admin').substring(0, 2).toUpperCase()}
                         </div>
                     </div>
                 </header>

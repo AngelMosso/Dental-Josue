@@ -9,7 +9,7 @@ import { patientService } from '../services/patientService';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import type { Transaction } from '../types';
 
-const FinanceCard = ({ title, amount, trend, icon: Icon, colorClass, gradient, shadow, onClick }: any) => (
+const FinanceCard = ({ title, amount, trend, icon: Icon, gradient, shadow, onClick }: any) => (
     <div
         onClick={onClick}
         className={`bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500 group hover-lift relative overflow-hidden ${onClick ? 'cursor-pointer hover:border-indigo-100' : ''}`}

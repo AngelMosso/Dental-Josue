@@ -6,8 +6,8 @@ import type { Patient, OdontogramData, TreatmentPlan, TreatmentPlanItem, Patient
 import {
     ChevronLeft, Phone, FileText, Activity,
     Save, Calendar, Edit2, ArrowRight,
-    AlertCircle, User, DollarSign, Plus,
-    Trash2, Check, X, CreditCard, ShieldCheck, ClipboardList, Printer, Smile
+    AlertCircle, DollarSign, Plus,
+    Trash2, Check, X, CreditCard, ShieldCheck, Printer, Smile
 } from 'lucide-react';
 
 import OdontogramaPrueba from '../components/OdontogramaPrueba';
@@ -609,7 +609,7 @@ const PatientDetailsPage = () => {
                                         };
                                         setTreatmentPlan(updatedPlan);
                                         await patientService.saveTreatmentPlan(updatedPlan);
-                                        
+
                                         // Registro Contable Automático (V16)
                                         await patientService.recordIncomeFromPayment(
                                             patient.id,
@@ -617,7 +617,7 @@ const PatientDetailsPage = () => {
                                             amount,
                                             `Abono de tratamiento: ${patient.full_name}`
                                         );
-                                        
+
                                         setPaymentAmount('');
                                     }}
                                     disabled={!paymentAmount || parseFloat(paymentAmount) <= 0}

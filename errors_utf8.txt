@@ -1,0 +1,10 @@
+﻿src/components/OdontogramaPrueba.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/components/ui/ErrorBoundary.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/components/ui/ErrorBoundary.tsx(1,28): error TS1484: 'ErrorInfo' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+src/components/ui/ErrorBoundary.tsx(1,39): error TS1484: 'ReactNode' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+src/pages/ClinicalRecordsPage.tsx(3,28): error TS6133: 'User' is declared but its value is never read.
+src/pages/FinancePage.tsx(12,58): error TS6133: 'colorClass' is declared but its value is never read.
+src/pages/PatientDetailsPage.tsx(9,18): error TS6133: 'User' is declared but its value is never read.
+src/pages/PatientDetailsPage.tsx(10,48): error TS6133: 'ClipboardList' is declared but its value is never read.
+src/pages/SettingsPage.tsx(6,5): error TS6133: 'ChevronRight' is declared but its value is never read.
+src/pages/SettingsPage.tsx(10,5): error TS6133: 'LogOut' is declared but its value is never read.

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { patientService } from '../services/patientService';
-import { Search, FileText, User, Calendar, ArrowRight, Activity, AlertCircle, Smile } from 'lucide-react';
+import { Search, FileText, Calendar, ArrowRight, Activity, AlertCircle, Smile } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import type { Patient } from '../types';

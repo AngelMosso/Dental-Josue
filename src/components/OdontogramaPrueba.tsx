@@ -1,4 +1,4 @@
-import React, { Suspense, useState, useMemo, useEffect, useRef } from 'react';
+import { Suspense, useState, useMemo, useEffect, useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import {
     useGLTF,

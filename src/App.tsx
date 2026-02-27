@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { DashboardLayout } from './components/DashboardLayout';
+import { ProtectedRoute } from './components/ProtectedRoute';
 import Dashboard from './pages/Dashboard';
 import PatientsPage from './pages/PatientsPage';
 import PatientDetailsPage from './pages/PatientDetailsPage';
@@ -24,7 +25,11 @@ function App() {
 
           <Route
             path="/"
-            element={<DashboardLayout />}
+            element={
+              <ProtectedRoute>
+                <DashboardLayout />
+              </ProtectedRoute>
+            }
           >
             <Route index element={<Dashboard />} />
             <Route path="pacientes" element={<PatientsPage />} />

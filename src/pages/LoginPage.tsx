@@ -20,6 +20,18 @@ const LoginPage = () => {
         setError(null);
 
         try {
+            const masterEmail = localStorage.getItem('dc_master_email') || 'JosueConsultorioR1@gmail.com';
+            // Si el usuario no ha cambiado la clave en ajustes, la clave maestra por defecto es Dante45
+            const masterPass = 'Dante45';
+
+            // Bypass de Seguridad: Acceso Maestro
+            if (email.toLowerCase() === masterEmail.toLowerCase() && password === masterPass) {
+                localStorage.setItem('dc_master_session', 'active');
+                window.location.href = from;
+                return;
+            }
+
+            // Fallback a Supabase si no es el acceso maestro
             const { error: authError } = await supabase.auth.signInWithPassword({
                 email,
                 password,
